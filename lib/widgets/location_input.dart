@@ -31,8 +31,8 @@ class _LocationInputState extends State<LocationInput> {
 
     try {
     final locData = await Location().getLocation();
-    // print(locData.latitude);
-    // print(locData.longitude);
+    print("PEGAR LOCALIZAÇÃO ATUAL - LAT: ${locData.latitude}");
+    print("PEGAR LOCALIZAÇÃO ATUAL - LNG: ${locData.longitude}");
 
     _showPreview(locData.latitude!, locData.longitude!);
     widget.onSelectPosition(LatLng(locData.latitude!, locData.longitude!));
@@ -52,7 +52,8 @@ class _LocationInputState extends State<LocationInput> {
 
     _showPreview(selectedPosition.latitude, selectedPosition.longitude);
 
-    //print(selectedPosition.latitude);
+    print("PEGAR LOCALIZAÇÃO ATUAL - LAT: ${selectedPosition.latitude}");
+    print("PEGAR LOCALIZAÇÃO ATUAL - LNG: ${selectedPosition.longitude}");
 
     widget.onSelectPosition(selectedPosition);
   }

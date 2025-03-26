@@ -54,7 +54,7 @@ class GreatPlaces with ChangeNotifier {
         'title': newPlace.title,
         'image': newPlace.image.path,
         'lat': position.latitude,
-        'lng': position.latitude,
+        'lng': position.longitude,
         'address': address,
       }
       );

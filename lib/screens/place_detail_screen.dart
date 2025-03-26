@@ -10,6 +10,7 @@ class PlaceDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final Place place = ModalRoute.of(context)?.settings.arguments as Place;
+    print('Localização recuperada: ${place.location?.latitude}, ${place.location?.longitude}');
 
     return Scaffold(
       appBar: AppBar(
