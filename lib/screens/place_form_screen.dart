@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_places/providers/great_places.dart';
 import 'package:map_places/widgets/image_input.dart';
 import 'package:map_places/widgets/location_input.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class PlaceFormScreen extends StatefulWidget {
@@ -19,17 +19,29 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
 
   final _titleController = TextEditingController();
   File? _pickedImage;
+  LatLng? _pickedPosition;
 
   void _selectImage(File pickImage) {
-    _pickedImage = pickImage;
+    setState(() {
+      _pickedImage = pickImage;
+    });
+  }
+
+  void _selectPosition(LatLng position) {
+    setState(() {
+      _pickedPosition = position;      
+    });
+
+  }
+
+  bool _isValidForm() {
+    return _titleController.text.isNotEmpty && _pickedImage != null && _pickedPosition != null;
   }
 
   void _submitForm() {
-    if(_titleController.text.isEmpty || _pickedImage == null) {
-      return;
-    } 
+    if(!_isValidForm()) return;
 
-    Provider.of<GreatPlaces>(context, listen: false).addPlace(_titleController.text, _pickedImage!);    
+    Provider.of<GreatPlaces>(context, listen: false).addPlace(_titleController.text, _pickedImage!, _pickedPosition!);    
 
     Navigator.of(context).pop();
   }
@@ -60,11 +72,11 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
                     
                     SizedBox(height: 10,),
 
-                    ImageInput(this._selectImage),
+                    ImageInput(_selectImage),
 
                     SizedBox(height: 10,),
 
-                    LocationInput(),
+                    LocationInput(_selectPosition),
                   ],
                 ),
               ),
@@ -84,7 +96,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
                                                 ) 
                                               ),
             ),
-            onPressed: _submitForm, 
+            onPressed: _isValidForm() ? _submitForm : null, 
           )
         ],
       )

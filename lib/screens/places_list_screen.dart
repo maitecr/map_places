@@ -42,7 +42,13 @@ class PlacesListScreen extends StatelessWidget{
                                                     ),
                                                   ),
                                                   title: Text(greatPlaces.itemByIndex(i).title),
-                                                  onTap: () {},
+                                                  subtitle: Text(greatPlaces.itemByIndex(i).location?.address ?? 'Endereço não disponível'),
+                                                  onTap: () {
+                                                    Navigator.of(context).pushNamed(
+                                                      AppRoutes.PLACE_DETAIL,
+                                                      arguments: greatPlaces.itemByIndex(i),
+                                                    );
+                                                  },
                                                 ),
                                               ),
         ),
