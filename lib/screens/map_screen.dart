@@ -55,7 +55,7 @@ class _MapScreenState extends State<MapScreen> {
             zoom: 13,
         ),
         onTap: widget.isReadOnly ? null : _selectPosition,
-       markers: (_pickedPosition == null && !widget.isReadOnly) 
+        markers: (_pickedPosition == null && !widget.isReadOnly) 
               ? {}
               : {
                 Marker(

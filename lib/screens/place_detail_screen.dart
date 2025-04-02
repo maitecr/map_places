@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:map_places/models/place.dart';
+import 'package:map_places/screens/live_location_screen.dart';
 import 'package:map_places/screens/map_screen.dart';
 
 class PlaceDetailScreen extends StatelessWidget {
@@ -50,7 +51,22 @@ class PlaceDetailScreen extends StatelessWidget {
                 ),
               );
             }, 
-            label: Text('Ver no mapa')),
+            label: Text('Ver no mapa')
+            ),
+            SizedBox(height: 10,),
+            TextButton.icon(
+              icon: Icon(Icons.location_pin),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    fullscreenDialog: true,
+                    builder: (ctx) => LiveLocationScreen(),
+                  )
+                );
+              }, 
+              label: Text("Localização em tempo real")
+            )
+
         ],
       ),
     );
