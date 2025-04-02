@@ -52,7 +52,12 @@ class _LiveLocationScrrenState extends State<LiveLocationScreen> {
       }
     }
 
-    _positionStream = Geolocator.getPositionStream();
+    _positionStream = Geolocator.getPositionStream(
+      locationSettings: LocationSettings(
+        accuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 30), // Atualiza a cada 30 segundos
+      ),
+    );
     _positionStream!.listen((Position position) {
       setState(() {
         _currentPosition = LatLng(position.latitude, position.longitude);
