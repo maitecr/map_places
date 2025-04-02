@@ -13,7 +13,6 @@ class MapScreen extends StatefulWidget {
                             longitude: -122.084),
     this.isReadOnly = false,
   });
-
  
   @override
   State<MapScreen> createState() => _MapScreenState();

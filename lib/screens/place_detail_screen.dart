@@ -60,7 +60,7 @@ class PlaceDetailScreen extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     fullscreenDialog: true,
-                    builder: (ctx) => LiveLocationScreen(),
+                    builder: (ctx) => LiveLocationScreen(savedPosition:  place.location!),
                   )
                 );
               }, 

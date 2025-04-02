@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:map_places/models/place.dart';
 
 class LiveLocationScreen extends StatefulWidget {
-  const LiveLocationScreen({super.key});
+  final PlaceLocation savedPosition;
+
+  LiveLocationScreen({
+    super.key,
+    required this.savedPosition, //DB saved location - lat/lng
+  });
 
   @override
   State<LiveLocationScreen> createState() => _LiveLocationScrrenState();
@@ -14,7 +20,8 @@ class _LiveLocationScrrenState extends State<LiveLocationScreen> {
   GoogleMapController? _mapController;
   LatLng _currentPosition = LatLng(0, 0);
   Stream<Position>? _positionStream; //Geolocator library
-  Marker? _marker;
+  Marker? _markerCurrentLocation; //Current location marker
+  Marker? _markerSavedLocation; //Saved location marker
 
   @override
   void initState() {
@@ -27,9 +34,15 @@ class _LiveLocationScrrenState extends State<LiveLocationScreen> {
     Position position = await Geolocator.getCurrentPosition();
     setState(() {
       _currentPosition = LatLng(position.latitude, position.longitude);
-      _marker = Marker(
+      _markerCurrentLocation = Marker(
         markerId: MarkerId("current_location"),
         position: _currentPosition,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      );
+
+      _markerSavedLocation = Marker(
+        markerId: MarkerId("saved_location"),
+        position: LatLng(widget.savedPosition.latitude, widget.savedPosition.longitude),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
       );
     });
@@ -58,13 +71,14 @@ class _LiveLocationScrrenState extends State<LiveLocationScreen> {
         timeLimit: Duration(seconds: 30), // Atualiza a cada 30 segundos
       ),
     );
-    _positionStream!.listen((Position position) {
+
+    _positionStream!.listen((Position position) { //Tracking live location
       setState(() {
         _currentPosition = LatLng(position.latitude, position.longitude);
-        _marker = Marker(
+        _markerCurrentLocation = Marker(
           markerId: MarkerId("current_location"),
           position: _currentPosition,
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
         );
       });
       _mapController?.animateCamera(CameraUpdate.newLatLng(_currentPosition));
@@ -82,7 +96,10 @@ class _LiveLocationScrrenState extends State<LiveLocationScreen> {
           target: _currentPosition,
           zoom: 15,
         ),
-        markers: _marker != null ? {_marker!} : {},
+        markers: {
+              if (_markerCurrentLocation != null) _markerCurrentLocation!, //User current location
+              if (_markerSavedLocation != null) _markerSavedLocation!, //User original location
+            },
         onMapCreated: (GoogleMapController controller) {
           _mapController = controller;
         },  

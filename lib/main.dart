@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
           hintColor: Colors.amber,
         ),
         home: PlacesListScreen(),
-//        home: LiveLocationScreen(),
         routes: {
           AppRoutes.PLACE_FORM: (ctx) => PlaceFormScreen(),
           AppRoutes.PLACE_DETAIL: (ctx) => PlaceDetailScreen(),
